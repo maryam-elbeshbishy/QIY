@@ -114,8 +114,8 @@ class main():
         if startScreen:
             self.__init__(60,1)
 
-
     def drawStartScreen(self):
+        self.win.fill((0,0,0))
         #Qix title
         centerX = 400
         font = pygame.font.Font('freesansbold.ttf', 200)
@@ -245,8 +245,6 @@ class main():
         self.win.blit(text, text_Rect)
 
     def reset(self):
-        # print("RESET") 
-        
         self.player.reset()
         self.grid.reset()
 main(60, 1)

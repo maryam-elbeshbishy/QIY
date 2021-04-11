@@ -1,4 +1,6 @@
 import pygame
+import random
+import math
 from Block import Block
 from Grid import Grid
 from Player import Player
@@ -20,6 +22,7 @@ class main():
         self.player = Player(self.coord,self.velocity,self.grid)
         self.spark = Spark([40,0],self.velocity,self.grid)
         self.qix = Qix([40,40],self.velocity,self.grid)
+        self.claimed = '0'
         # print(self.block.getWhite())
         self.start()
     def start(self):
@@ -47,6 +50,7 @@ class main():
                 self.player.moveDown()
             self.drawGrid()
             self.drawEntities()
+            self.drawScoreboard()
             # print("HEYL")
             pygame.display.update()
     def drawGrid(self):
@@ -71,8 +75,55 @@ class main():
         pygame.draw.rect(self.win, (0, 100, 255),
                          (50 + self.qix.coord[0] * self.velocity - 4, 50 + self.qix.coord[1] * self.velocity - 4,
                           self.width + 6, self.width + 6))
+    
+    def drawScoreboard(self):
+        centerX = ((745-474)//2) + 474 #center of the scoreboard
+
+        #Upper Border
+        pygame.draw.rect(self.win, (109, 67, 234), (469, 50, 281, 5))
+        #Left Border
+        pygame.draw.rect(self.win, (109, 67, 234), (469, 50, 5, 400))
+        #Lower Border
+        pygame.draw.rect(self.win, (109, 67, 234), (469, 445, 281, 5))
+        #Right Border
+        pygame.draw.rect(self.win, (109, 67, 234), (745, 50, 5, 400))
+
+        #Title Text
+        red = random.randint(0,255)
+        green = random.randint(0,255)
+        blue = random.randint(0,255)
+        font = pygame.font.Font('freesansbold.ttf', 64)
+        text_Colour = (red, green, blue)
+        text_Background = (0,0,0) 
+        text = font.render('QIX', True, text_Colour, text_Background)
+        text_Rect = text.get_rect()
+        text_Rect.center = (centerX, 110)
+        self.win.blit(text, text_Rect)
+
+        #Hearts
+        font = pygame.font.SysFont('segoeuisymbol', 32)
+        text_Colour = (243, 149, 182)
+        text_Background = (0,0,0) 
+        text = font.render('❤'*self.player.lives, True, text_Colour, text_Background)
+        text_Rect = text.get_rect()
+        text_Rect.center = (centerX, 200)
+        self.win.blit(text, text_Rect)
+
+        #Precentage Claimed 
+        if not self.grid.travel:
+            self.claimed = str(math.floor(self.grid.getClaimed()))
+        font = pygame.font.Font('freesansbold.ttf', 24)
+        text_Colour = (205, 191, 248)
+        text_Background = (0,0,0) 
+        text_String = 'Claimed: ' + self.claimed + '%'
+        text = font.render(text_String, True, text_Colour, text_Background)
+        text_Rect = text.get_rect()
+        text_Rect.center = (centerX, 250)
+        self.win.blit(text, text_Rect)
+
     def reset(self):
-        print("HELLO")
+        print("RESET") 
+        
         self.player.reset()
         self.grid.reset()
 main()

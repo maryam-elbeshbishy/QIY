@@ -56,13 +56,15 @@ class Grid():
                     self.grid[i].append(1)
                 else:
                     self.grid[i].append(0)
+    def printGrid(self):
         for i in range(0,self.size):                     # These for loops PRINT the grid. We dont need it anymore but good for debug
             for j in range(0,self.size):
                 print(self.grid[j][i],end=' ')
             print()
-
     def getGrid(self,pos):
         return self.grid[pos[0]][pos[1]]
+    def updateGrid(self,coord,id):
+        self.grid[coord[0]][coord[1]] = id
 # ----------------------------------- PLAYER RELATED FUNCTIONS -------------------------------------------
     def updatePlayerX(self,x):
         self.coord[0] += x
@@ -106,6 +108,8 @@ class Grid():
                 self.addLastVertex()
                 self.endCircuit()
                 self.addTotals()
+                # print(self.current)
+                print(self.vertex)
                 self.vertex = []
                 self.current = []
             return True
@@ -115,5 +119,32 @@ class Grid():
     def endCircuit(self):
         for i in range(len(self.current)):
             self.grid[self.current[i][0]][self.current[i][1]] = 1
-        if len(self.vertex) <= 2:
-            return
+        # if len(self.vertex) <= 2:
+        #     return
+        for i in range(len(self.current)):
+            if self.getGrid([self.current[i][0], self.current[i][1] + 1]) != 1:
+                self.fill([self.current[i][0], self.current[i][1] + 1])
+            if self.getGrid([self.current[i][0], self.current[i][1] - 1]) != 1:
+                self.fill([self.current[i][0], self.current[i][1] - 1])
+            if self.getGrid([self.current[i][0]+1, self.current[i][1]]) != 1:
+                self.fill([self.current[i][0]+1, self.current[i][1]])
+            if self.getGrid([self.current[i][0]-1, self.current[i][1]]) != 1:
+                self.fill([self.current[i][0]-1, self.current[i][1]])
+    def fill(self,pos):
+        tempGrid = deepcopy(self.grid)
+
+        queue = [[pos[0],pos[1]]]
+        print(queue)
+        while len(queue) > 0:
+            square = queue.pop()
+            if self.getGrid(square) == 4:
+                return False
+            if tempGrid[square[0]][square[1]] == 0:
+                queue.append([square[0]+1,square[1]])
+                queue.append([square[0]-1,square[1]])
+                queue.append([square[0],square[1]+1])
+                queue.append([square[0],square[1]-1])
+                tempGrid[square[0]][square[1]] = 2
+        self.grid = deepcopy(tempGrid)
+        # self.printGrid()
+        return True

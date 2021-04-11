@@ -202,7 +202,7 @@ class main():
         font = pygame.font.Font('freesansbold.ttf', 24)
         text_Colour = (205, 191, 248)
         text_Background = (0,0,0) 
-        text_String = 'Claimed: ' + str(self.claimed) + '%'
+        text_String = 'Claimed: ' + str(self.claimed) + '/' + str(self.requiredClaimed) + '%'
         text = font.render(text_String, True, text_Colour, text_Background)
         text_Rect = text.get_rect()
         text_Rect.center = (centerX, 250)

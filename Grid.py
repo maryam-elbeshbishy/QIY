@@ -109,7 +109,7 @@ class Grid():
                 self.endCircuit()
                 self.addTotals()
                 # print(self.current)
-                print(self.vertex)
+                # print(self.vertex)
                 self.vertex = []
                 self.current = []
             return True
@@ -134,7 +134,7 @@ class Grid():
         tempGrid = deepcopy(self.grid)
 
         queue = [[pos[0],pos[1]]]
-        print(queue)
+        # print(queue)
         while len(queue) > 0:
             square = queue.pop()
             if self.getGrid(square) == 4:

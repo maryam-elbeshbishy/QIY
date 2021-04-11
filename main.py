@@ -47,6 +47,7 @@ class main():
                 self.player.moveDown()
             self.drawGrid()
             self.drawEntities()
+            self.drawScoreboard()
             # print("HEYL")
             pygame.display.update()
     def drawGrid(self):
@@ -71,6 +72,16 @@ class main():
         pygame.draw.rect(self.win, (0, 100, 255),
                          (50 + self.qix.coord[0] * self.velocity - 4, 50 + self.qix.coord[1] * self.velocity - 4,
                           self.width + 6, self.width + 6))
+    
+    def drawScoreboard(self):
+        pygame.draw.rect(self.win, (109, 67, 234), (469, 50, 281, 5))
+        pygame.draw.rect(self.win, (109, 67, 234), (469, 50, 5, 400))
+        pygame.draw.rect(self.win, (109, 67, 234), (469, 445, 281, 5))
+        pygame.draw.rect(self.win, (109, 67, 234), (745, 50, 5, 400))
+
+
+
+
     def reset(self):
         print("HELLO")
         self.player.reset()

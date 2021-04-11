@@ -24,18 +24,43 @@ class main():
         self.qix = Qix([40,40],self.velocity,self.grid)
         self.claimed = '0'
         # print(self.block.getWhite())
-        self.start()
-    def start(self):
+        self.startScreen()
+
+    def startScreen(self):
+        run = True
+        con = False
+        while run:
+            pygame.time.delay(65)
+            mouse = pygame.mouse.get_pos()
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    run = False
+                    con = False
+                    break
+                if event.type == pygame.KEYDOWN: 
+                    run = False
+                    con = True 
+            self.drawStartScreen()
+            pygame.display.update()
+        if con:
+            self.game()
+
+    def game(self):
+        startScreen = False
         run = True
         while run:
             pygame.time.delay(65)
-
             self.spark.followBounds()
             self.qix.findDirection()
             if self.spark.checkCollision():
                 self.reset()
+            if self.player.lives == 0:
+                run = False
+                startScreen = True
+                break
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
+                    startScreen = False
                     run = False
                     break
             self.keys = pygame.key.get_pressed()
@@ -51,8 +76,35 @@ class main():
             self.drawGrid()
             self.drawEntities()
             self.drawScoreboard()
-            # print("HEYL")
             pygame.display.update()
+        if startScreen:
+            self.__init__()
+
+    def drawStartScreen(self):
+        #Qix title
+        centerX = 400
+        font = pygame.font.Font('freesansbold.ttf', 200)
+        text_Colour = (205, 191, 248)
+        text_Background = (0,0,0) 
+        text = font.render('QIX', True, text_Colour, text_Background)
+        text_Rect = text.get_rect()
+        text_Rect.center = (centerX, 200)
+        self.win.blit(text, text_Rect)
+        #Press any key
+        font = pygame.font.Font('freesansbold.ttf', 32)
+        text_Colour = (205, 191, 248) 
+        text = font.render('Press any key to start', True, text_Colour, text_Background)
+        text_Rect = text.get_rect()
+        text_Rect.center = (centerX, 400)
+        self.win.blit(text, text_Rect)
+        #Bottom credits
+        font = pygame.font.Font('freesansbold.ttf', 13)
+        text_Colour = (205, 191, 248) 
+        text = font.render('Recreated By: Abdullah Aftab, My Chi Duong, Maryam Elbeshbishy, Igor Goncalves Penedos, Deandra Spike-Madden', True, text_Colour, text_Background)
+        text_Rect = text.get_rect()
+        text_Rect.center = (centerX, 470)
+        self.win.blit(text, text_Rect)
+
     def drawGrid(self):
         for i in range(self.gridSize):
             for j in range(self.gridSize):
@@ -65,6 +117,7 @@ class main():
                 if self.grid.getGrid([i, j]) == 3:
                     pygame.draw.rect(self.win, self.block.getOrangeColor(),
                                      (50 + 5 * i, 50 + 5 * j, self.width, self.width))
+
     def drawEntities(self):
         pygame.draw.rect(self.win, (255, 0, 0),
                          (50 + self.player.coord[0]*self.velocity - 3, 50 + self.player.coord[1]*self.velocity - 3,
@@ -78,7 +131,6 @@ class main():
     
     def drawScoreboard(self):
         centerX = ((745-474)//2) + 474 #center of the scoreboard
-
         #Upper Border
         pygame.draw.rect(self.win, (109, 67, 234), (469, 50, 281, 5))
         #Left Border
@@ -87,7 +139,6 @@ class main():
         pygame.draw.rect(self.win, (109, 67, 234), (469, 445, 281, 5))
         #Right Border
         pygame.draw.rect(self.win, (109, 67, 234), (745, 50, 5, 400))
-
         #Title Text
         red = random.randint(0,255)
         green = random.randint(0,255)
@@ -99,7 +150,6 @@ class main():
         text_Rect = text.get_rect()
         text_Rect.center = (centerX, 110)
         self.win.blit(text, text_Rect)
-
         #Hearts
         font = pygame.font.SysFont('segoeuisymbol', 32)
         text_Colour = (243, 149, 182)
@@ -108,7 +158,6 @@ class main():
         text_Rect = text.get_rect()
         text_Rect.center = (centerX, 200)
         self.win.blit(text, text_Rect)
-
         #Precentage Claimed 
         if not self.grid.travel:
             self.claimed = str(math.floor(self.grid.getClaimed()))

@@ -1,1 +1,1 @@
-time.sleep(3)
+self.game()

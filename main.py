@@ -109,7 +109,6 @@ class main():
                 if event.type == pygame.KEYDOWN: 
                     run = False
                     startScreen = True 
-                    print('2')
             self.drawEndScreen(result)
             pygame.display.update()
         if startScreen:

@@ -8,8 +8,8 @@ class Spark(Player):
         self.next = 1
     def checkCollision(self):
         if self.coord == self.grid.coord:
-            print(self.coord)
-            print(self.grid.coord)
+            # print(self.coord)
+            # print(self.grid.coord)
             return True
     def followBounds(self):
         self.pos = self.grid.totalVertex[self.next]

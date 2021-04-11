@@ -7,7 +7,7 @@ from Player import Player
 from Spark import Spark
 from Qix import Qix
 class main():
-    def __init__(self):
+    def __init__(self, require, level):
         pygame.init()
         self.win = pygame.display.set_mode((800,500))
         pygame.display.set_caption("QIX")
@@ -22,16 +22,20 @@ class main():
         self.player = Player(self.coord,self.velocity,self.grid)
         self.spark = Spark([40,0],self.velocity,self.grid)
         self.qix = Qix([40,40],self.velocity,self.grid)
-        self.claimed = '0'
+        self.claimed = 0
+        self.requiredClaimed = require
+        self.level = level
         # print(self.block.getWhite())
-        self.startScreen()
+        if self.level == 1:
+            self.startScreen()
+        else:
+            self.game()
 
     def startScreen(self):
         run = True
         con = False
         while run:
             pygame.time.delay(65)
-            mouse = pygame.mouse.get_pos()
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     run = False
@@ -46,7 +50,8 @@ class main():
             self.game()
 
     def game(self):
-        startScreen = False
+        endScreen = False
+        nextLevel = False
         run = True
         while run:
             pygame.time.delay(65)
@@ -56,11 +61,14 @@ class main():
                 self.reset()
             if self.player.lives == 0:
                 run = False
-                startScreen = True
+                endScreen = True
                 break
+            if self.claimed >= self.requiredClaimed:
+                run = False
+                nextLevel = True
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
-                    startScreen = False
+                    endScreen = False
                     run = False
                     break
             self.keys = pygame.key.get_pressed()
@@ -73,12 +81,40 @@ class main():
                 self.player.moveUp()
             elif self.keys[pygame.K_DOWN]:
                 self.player.moveDown()
+            elif self.keys[pygame.K_r]:
+                endScreen = True
+                run = False
             self.drawGrid()
             self.drawEntities()
             self.drawScoreboard()
             pygame.display.update()
+        if endScreen:
+            self.endScreen('lost')
+        if nextLevel:
+            if self.level + 1 == 5:
+                self.endScreen('won')
+            else:
+                self.__init__(self.requiredClaimed+5, self.level+1)
+
+    def endScreen(self, result):
+        startScreen = False
+        run = True
+        while run:
+            pygame.time.delay(65)
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    run = False
+                    startScreen = False
+                    break
+                if event.type == pygame.KEYDOWN: 
+                    run = False
+                    startScreen = True 
+                    print('2')
+            self.drawEndScreen(result)
+            pygame.display.update()
         if startScreen:
-            self.__init__()
+            self.__init__(60,1)
+
 
     def drawStartScreen(self):
         #Qix title
@@ -160,21 +196,60 @@ class main():
         self.win.blit(text, text_Rect)
         #Precentage Claimed 
         if not self.grid.travel:
-            self.claimed = str(math.floor(self.grid.getClaimed()))
+            self.claimed = math.floor(self.grid.getClaimed())
         font = pygame.font.Font('freesansbold.ttf', 24)
         text_Colour = (205, 191, 248)
         text_Background = (0,0,0) 
-        text_String = 'Claimed: ' + self.claimed + '%'
+        text_String = 'Claimed: ' + str(self.claimed) + '%'
+        text = font.render(text_String, True, text_Colour, text_Background)
+        text_Rect = text.get_rect()
+        text_Rect.center = (centerX, 250)
+        self.win.blit(text, text_Rect)
+        #Level
+        font = pygame.font.Font('freesansbold.ttf', 24)
+        text_Colour = (205, 191, 248)
+        text_Background = (0,0,0) 
+        text_String = 'Level: ' + str(self.level)
+        text = font.render(text_String, True, text_Colour, text_Background)
+        text_Rect = text.get_rect()
+        text_Rect.center = (centerX, 300)
+        self.win.blit(text, text_Rect)
+
+    def drawEndScreen(self, result):
+        self.win.fill((0,0,0))
+        centerX = 400
+        font = pygame.font.Font('freesansbold.ttf', 100)
+        text_Colour = (205, 191, 248)
+        text_Background = (0,0,0) 
+        text_String = 'YOU ' + result.upper()
+        text = font.render(text_String, True, text_Colour, text_Background)
+        text_Rect = text.get_rect()
+        text_Rect.center = (centerX, 100)
+        self.win.blit(text, text_Rect)
+
+        font = pygame.font.Font('freesansbold.ttf', 24)
+        text_Colour = (205, 191, 248)
+        text_Background = (0,0,0) 
+        text_String = 'Level: ' + str(self.level)
+        text = font.render(text_String, True, text_Colour, text_Background)
+        text_Rect = text.get_rect()
+        text_Rect.center = (centerX, 200)
+        self.win.blit(text, text_Rect)
+        
+        font = pygame.font.Font('freesansbold.ttf', 24)
+        text_Colour = (205, 191, 248)
+        text_Background = (0,0,0) 
+        text_String = 'Claimed: ' + str(self.claimed) + '%'
         text = font.render(text_String, True, text_Colour, text_Background)
         text_Rect = text.get_rect()
         text_Rect.center = (centerX, 250)
         self.win.blit(text, text_Rect)
 
     def reset(self):
-        print("RESET") 
+        # print("RESET") 
         
         self.player.reset()
         self.grid.reset()
-main()
+main(60, 1)
 
 pygame.quit()

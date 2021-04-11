@@ -37,6 +37,12 @@ class Grid():
             self.totalVertex.append(self.vertex[i])
         for i in range(len(self.current)):
             self.totalMotion.append(self.current[i])
+
+    def getClaimed(self): 
+        amountOfZeros = sum(x.count(0) for x in self.grid)
+        sizeOfGrid = (len(self.grid))**2
+        borderOfOnes = (len(self.grid)-1)*4
+        return 100 - ((amountOfZeros)/(sizeOfGrid - borderOfOnes))*100
 # --------------------------------------- GRID ACCESS/CREATION FUNCTIONS --------------------------------------
     def reset(self):
         self.coord = [40,79]

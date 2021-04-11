@@ -122,7 +122,8 @@ class main():
         self.win.blit(text, text_Rect)
 
     def reset(self):
-        print("RESET")
+        print("RESET") 
+        
         self.player.reset()
         self.grid.reset()
 main()

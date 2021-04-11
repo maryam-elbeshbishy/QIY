@@ -32,6 +32,7 @@ class main():
             self.game()
 
     def startScreen(self):
+        self.fade(100)
         run = True
         con = False
         while run:
@@ -50,6 +51,7 @@ class main():
             self.game()
 
     def game(self):
+        self.fade(300)
         endScreen = False
         nextLevel = False
         run = True
@@ -97,6 +99,7 @@ class main():
                 self.__init__(self.requiredClaimed+5, self.level+1)
 
     def endScreen(self, result):
+        self.fade(100)
         startScreen = False
         run = True
         while run:
@@ -243,6 +246,16 @@ class main():
         text_Rect = text.get_rect()
         text_Rect.center = (centerX, 250)
         self.win.blit(text, text_Rect)
+
+    def fade(self, delay): 
+        fade = pygame.Surface(((800,500)))
+        fade.fill((0,0,0))
+        for alpha in range(0, delay): #delay/100 = seconds
+            fade.set_alpha(alpha)
+            # redrawWindow()
+            self.win.blit(fade, (0,0))
+            pygame.display.update()
+            pygame.time.delay(5)
 
     def reset(self):
         self.player.reset()

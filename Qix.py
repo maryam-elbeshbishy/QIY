@@ -16,9 +16,9 @@ class Qix(Player):
             self.count = 0
             self.direction = random.randint(0,3)
         for i in range(self.monkey):
-            print(i)
+            # print(i)
             if i%self.speed == 0:
-                print(i%self.speed)
+                # print(i%self.speed)
                 self.move()
 
     def move(self):

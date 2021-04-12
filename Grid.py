@@ -46,6 +46,12 @@ class Grid():
 # --------------------------------------- GRID ACCESS/CREATION FUNCTIONS --------------------------------------
     def reset(self):
         self.coord = [40,79]
+        for i in range(self.size):
+            for j in range(self.size):
+                if self.getGrid([i,j])==3:
+                    self.updateGrid([i,j],0)
+        self.current = []
+        self.vertex = []
     def createGrid(self):
         for i in range(self.size):  # For loop that creates the grid system, first loop makes the row, second makes the columns
             self.grid.append([])

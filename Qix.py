@@ -8,6 +8,11 @@ class Qix(Player):
         self.grid = grid
         self.count = 0
         self.direction = random.randint(0,3)
+        self.collision = False
+    def checkCollision(self):
+        collision = self.collision
+        self.collision= False
+        return collision
     def findDirection(self):
         # print(self.coord)
         self.monkey = random.randint(8,16)
@@ -33,23 +38,30 @@ class Qix(Player):
             self.moveRightwards()
 
     def moveUpwards(self):
-            if self.grid.getGrid([self.coord[0],self.coord[1]-1]) !=1:
-                self.coord[1]-=1
-            self.grid.updateGrid(self.coord, 4)
-            self.count+=1
+        if self.grid.getGrid([self.coord[0], self.coord[1] - 1]) == 3 or self.coord == self.grid.coord:
+            self.collision = True
+        if self.grid.getGrid([self.coord[0],self.coord[1]-1]) !=1:
+            self.coord[1]-=1
+        self.grid.updateGrid(self.coord, 4)
+        self.count+=1
     def moveDownwards(self):
-            if self.grid.getGrid([self.coord[0],self.coord[1]+1]) !=1:
-                self.coord[1]+=1
-            self.grid.updateGrid(self.coord, 4)
-            self.count+=1
+        if self.grid.getGrid([self.coord[0], self.coord[1] + 1]) == 3 or self.coord == self.grid.coord:
+            self.collision = True
+        if self.grid.getGrid([self.coord[0],self.coord[1]+1]) !=1:
+            self.coord[1]+=1
+        self.grid.updateGrid(self.coord, 4)
+        self.count+=1
     def moveLeftwards(self):
-            if self.grid.getGrid([self.coord[0]-1, self.coord[1]]) != 1:
-                self.coord[0] -= 1
-            self.grid.updateGrid(self.coord, 4)
-            self.count+=1
+        if self.grid.getGrid([self.coord[0]-1, self.coord[1]]) == 3 or self.coord == self.grid.coord:
+            self.collision = True
+        if self.grid.getGrid([self.coord[0]-1, self.coord[1]]) != 1:
+            self.coord[0] -= 1
+        self.grid.updateGrid(self.coord, 4)
+        self.count+=1
     def moveRightwards(self):
-            if self.grid.getGrid([self.coord[0]+1, self.coord[1]]) != 1:
-                self.coord[0] += 1
-
-            self.grid.updateGrid(self.coord, 4)
-            self.count+=1
+        if self.grid.getGrid([self.coord[0]+1, self.coord[1]]) == 3 or self.coord == self.grid.coord:
+            self.collision = True
+        if self.grid.getGrid([self.coord[0]+1, self.coord[1]]) != 1:
+            self.coord[0] += 1
+        self.grid.updateGrid(self.coord, 4)
+        self.count+=1

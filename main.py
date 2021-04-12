@@ -66,7 +66,7 @@ class main():
         run = True
         while run:
             pygame.time.delay(30)
-            if self.spark.checkCollision() or self.spark2.checkCollision():
+            if self.spark.checkCollision() or self.spark2.checkCollision() or self.qix.checkCollision():
                 self.reset()
             if self.level > 1:
                 if self.spark3.checkCollision():
@@ -150,7 +150,7 @@ class main():
             self.drawEndScreen(result)
             pygame.display.update()
         if startScreen:
-            self.__init__(60,1)
+            self.__init__(25,1)
 
     def drawStartScreen(self):
         self.win.fill((0,0,0))
@@ -276,8 +276,8 @@ class main():
             pygame.time.delay(5)
 
     def reset(self):
-        self.player.reset()
         self.grid.reset()
+        self.player.reset()
 main(25, 1)
 
 pygame.quit()

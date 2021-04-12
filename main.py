@@ -26,10 +26,14 @@ class main():
             self.spark3 = Spark([0,40],self.velocity,self.grid,3)
         if level > 2:
             self.spark4 = Spark([0,40],self.velocity,self.grid,2)
-        self.qix = Qix([40,40],self.velocity,self.grid)
+        self.level = level
+        if self.level < 5:
+            self.qix = Qix([40,40],self.velocity,self.grid,3)
+        else:
+            self.qix = Qix([40,40],self.velocity,self.grid,30-self.level*5)
         self.claimed = 0
         self.requiredClaimed = require
-        self.level = level
+
         # print(self.block.getWhite())
         if self.level == 1:
             self.startScreen()

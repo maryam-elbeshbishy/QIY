@@ -130,6 +130,7 @@ class Grid():
                 self.fill([self.current[i][0]+1, self.current[i][1]])
             if self.getGrid([self.current[i][0]-1, self.current[i][1]]) != 1:
                 self.fill([self.current[i][0]-1, self.current[i][1]])
+        self.block.changeClaimed()
     def fill(self,pos):
         tempGrid = deepcopy(self.grid)
 

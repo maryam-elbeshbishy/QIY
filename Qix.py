@@ -26,23 +26,27 @@ class Qix(Player):
             self.moveRightwards()
 
     def moveUpwards(self):
-        if self.grid.getGrid([self.coord[0],self.coord[1]-1]) !=1:
-            self.coord[1]-=1
-        self.grid.updateGrid(self.coord, 4)
-        self.count+=1
+        for i in range(2):
+            if self.grid.getGrid([self.coord[0],self.coord[1]-1]) !=1:
+                self.coord[1]-=1
+            self.grid.updateGrid(self.coord, 4)
+            self.count+=1
     def moveDownwards(self):
-        if self.grid.getGrid([self.coord[0],self.coord[1]+1]) !=1:
-            self.coord[1]+=1
-        self.grid.updateGrid(self.coord, 4)
-        self.count+=1
+        for i in range(2):
+            if self.grid.getGrid([self.coord[0],self.coord[1]+1]) !=1:
+                self.coord[1]+=1
+            self.grid.updateGrid(self.coord, 4)
+            self.count+=1
     def moveLeftwards(self):
-        if self.grid.getGrid([self.coord[0]-1, self.coord[1]]) != 1:
-            self.coord[0] -= 1
-        self.grid.updateGrid(self.coord, 4)
-        self.count+=1
+        for i in range(2):
+            if self.grid.getGrid([self.coord[0]-1, self.coord[1]]) != 1:
+                self.coord[0] -= 1
+            self.grid.updateGrid(self.coord, 4)
+            self.count+=1
     def moveRightwards(self):
-        if self.grid.getGrid([self.coord[0]+1, self.coord[1]]) != 1:
-            self.coord[0] += 1
+        for i in range(2):
+            if self.grid.getGrid([self.coord[0]+1, self.coord[1]]) != 1:
+                self.coord[0] += 1
 
-        self.grid.updateGrid(self.coord, 4)
-        self.count+=1
+            self.grid.updateGrid(self.coord, 4)
+            self.count+=1

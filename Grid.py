@@ -10,6 +10,7 @@ class Grid():
         self.grid = []              # grid
         self.vertex = []            # keeps all the vertexes
         self.totalVertex = [[0,0],[79,0],[79,79],[0,79]]
+        self.lastVertexCrossed = 3
         self.totalMotion = []       # keeps track of every single path
         self.size = size            # size of grid
         self.createGrid()           # calls the createGrid function that creates the grid system
@@ -33,11 +34,10 @@ class Grid():
         return
 
     def addTotals(self):
-        for i in range(len(self.vertex)):
-            self.totalVertex.append(self.vertex[i])
         for i in range(len(self.current)):
             self.totalMotion.append(self.current[i])
-
+        for i in range(len(self.vertex)):
+            self.totalVertex.append(self.vertex[i])
     def getClaimed(self): 
         amountOfZeros = sum(x.count(0) for x in self.grid)
         sizeOfGrid = (len(self.grid))**2

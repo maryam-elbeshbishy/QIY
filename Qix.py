@@ -15,36 +15,35 @@ class Qix(Player):
             self.count = 0
             self.direction = random.randint(0,3)
         self.move()
+
     def move(self):
-        if self.direction == 0:
-            self.moveUpwards()
-        if self.direction == 1:
-            self.moveDownwards()
-        if self.direction == 2:
-            self.moveLeftwards()
-        if self.direction == 3:
-            self.moveRightwards()
+        for i in range(2):
+            self.grid.updateGrid(self.coord,0)
+            if self.direction == 0:
+                self.moveUpwards()
+            if self.direction == 1:
+                self.moveDownwards()
+            if self.direction == 2:
+                self.moveLeftwards()
+            if self.direction == 3:
+                self.moveRightwards()
 
     def moveUpwards(self):
-        for i in range(2):
             if self.grid.getGrid([self.coord[0],self.coord[1]-1]) !=1:
                 self.coord[1]-=1
             self.grid.updateGrid(self.coord, 4)
             self.count+=1
     def moveDownwards(self):
-        for i in range(2):
             if self.grid.getGrid([self.coord[0],self.coord[1]+1]) !=1:
                 self.coord[1]+=1
             self.grid.updateGrid(self.coord, 4)
             self.count+=1
     def moveLeftwards(self):
-        for i in range(2):
             if self.grid.getGrid([self.coord[0]-1, self.coord[1]]) != 1:
                 self.coord[0] -= 1
             self.grid.updateGrid(self.coord, 4)
             self.count+=1
     def moveRightwards(self):
-        for i in range(2):
             if self.grid.getGrid([self.coord[0]+1, self.coord[1]]) != 1:
                 self.coord[0] += 1
 

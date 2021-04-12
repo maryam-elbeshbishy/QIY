@@ -20,7 +20,12 @@ class main():
         self.block = Block()
         self.grid = Grid(self.gridSize, self.block)
         self.player = Player(self.coord,self.velocity,self.grid)
-        self.spark = Spark([40,0],self.velocity,self.grid)
+        self.spark = Spark([40,0],self.velocity,self.grid,0)
+        self.spark2 = Spark([40,0],self.velocity,self.grid,1)
+        if level > 1:
+            self.spark3 = Spark([0,40],self.velocity,self.grid,3)
+        if level > 2:
+            self.spark4 = Spark([0,40],self.velocity,self.grid,2)
         self.qix = Qix([40,40],self.velocity,self.grid)
         self.claimed = 0
         self.requiredClaimed = require
@@ -56,11 +61,20 @@ class main():
         nextLevel = False
         run = True
         while run:
-            pygame.time.delay(65)
-            self.spark.followBounds()
-            self.qix.findDirection()
-            if self.spark.checkCollision():
+            pygame.time.delay(30)
+            if self.spark.checkCollision() or self.spark2.checkCollision():
                 self.reset()
+            if self.level > 1:
+                if self.spark3.checkCollision():
+                    self.reset()
+                self.spark3.followBounds()
+            if self.level > 2:
+                if self.spark4.checkCollision():
+                    self.reset()
+                self.spark4.followBounds()
+            self.spark.followBounds()
+            self.spark2.followBounds()
+            self.qix.findDirection()
             if self.player.lives == 0:
                 run = False
                 endScreen = True
@@ -93,7 +107,7 @@ class main():
         if endScreen:
             self.endScreen('lost')
         if nextLevel:
-            if self.level + 1 == 5:
+            if self.level + 1 == 11:
                 self.endScreen('won')
             else:
                 self.__init__(self.requiredClaimed+5, self.level+1)
@@ -150,7 +164,7 @@ class main():
                     pygame.draw.rect(self.win, (255, 255, 255),
                                      (50 + 5 * i, 50 + 5 * j, self.width, self.width))
                 if self.grid.getGrid([i, j]) == 2:
-                    pygame.draw.rect(self.win, (128, 128, 128),
+                    pygame.draw.rect(self.win, self.block.getGreyColor(),
                                      (50 + 5 * i, 50 + 5 * j, self.width, self.width))
                 if self.grid.getGrid([i, j]) == 3:
                     pygame.draw.rect(self.win, self.block.getOrangeColor(),
@@ -160,13 +174,23 @@ class main():
         pygame.draw.rect(self.win, (255, 0, 0),
                          (50 + self.player.coord[0]*self.velocity - 3, 50 + self.player.coord[1]*self.velocity - 3,
                           self.width + 6, self.width + 6))
-        pygame.draw.rect(self.win, (255, 105, 180), (50 + self.spark.coord[0] * self.velocity - 3,
+        pygame.draw.rect(self.win, self.spark.getColor(), (50 + self.spark.coord[0] * self.velocity - 3,
                                                      50 + self.spark.coord[1] * self.velocity - 3,
+                                                     self.width + 4, self.width + 4))
+        pygame.draw.rect(self.win, self.spark.getColor(), (50 + self.spark2.coord[0] * self.velocity - 3,
+                                                     50 + self.spark2.coord[1] * self.velocity - 3,
                                                      self.width + 4, self.width + 4))
         pygame.draw.rect(self.win, (0, 100, 255),
                          (50 + self.qix.coord[0] * self.velocity - 4, 50 + self.qix.coord[1] * self.velocity - 4,
                           self.width + 6, self.width + 6))
-    
+        if self.level > 1:
+            pygame.draw.rect(self.win, self.spark.getColor(), (50 + self.spark3.coord[0] * self.velocity - 3,
+                                                         50 + self.spark3.coord[1] * self.velocity - 3,
+                                                         self.width + 4, self.width + 4))
+        if self.level > 2:
+            pygame.draw.rect(self.win, self.spark.getColor(), (50 + self.spark4.coord[0] * self.velocity - 3,
+                                                         50 + self.spark4.coord[1] * self.velocity - 3,
+                                                         self.width + 4, self.width + 4))
     def drawScoreboard(self):
         centerX = ((745-474)//2) + 474 #center of the scoreboard
         #Upper Border
@@ -260,6 +284,6 @@ class main():
     def reset(self):
         self.player.reset()
         self.grid.reset()
-main(60, 1)
+main(25, 1)
 
 pygame.quit()

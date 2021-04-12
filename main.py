@@ -51,7 +51,7 @@ class main():
             self.game()
 
     def game(self):
-        self.fade(300)
+        self.fade(200)
         endScreen = False
         nextLevel = False
         run = True

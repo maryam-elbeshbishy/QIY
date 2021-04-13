@@ -5,7 +5,7 @@
 * The objective is for the marker to take over as much of the board without hitting the Qix (which moves in random order) or the Sparx (Which moves along the edges of the collected land). We decided to use Pygame, as it was simple to learn and our team was familiar with the python programming language. 
 
 **INSTRUCTIONS TO RUN THE GAME**
-* Download main.exe
+* In the DIST folder, there is a main.exe, download main.exe
 * Click on the file, and the game will start 
 * If it says its a virus just ignore that ahaha :)
 * Enjoy :D

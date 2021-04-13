@@ -114,7 +114,24 @@ class main():
             if self.level + 1 == 11:
                 self.endScreen('won')
             else:
+                self.nextLevelPause()
                 self.__init__(self.requiredClaimed+5, self.level+1)
+
+    def nextLevelPause(self):
+        self.fade(50)
+        self.drawNextLevelPause()
+        run = True
+        while run:
+            pygame.time.delay(65)
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    run = False
+                    return
+                if event.type == pygame.KEYDOWN: 
+                    run = False
+                    return
+            pygame.display.update()
+
 
     def endScreen(self, result):
         self.fade(100)
@@ -137,29 +154,16 @@ class main():
 
     def drawStartScreen(self):
         self.win.fill((0,0,0))
-        #Qix title
         centerX = 400
-        font = pygame.font.Font('freesansbold.ttf', 200)
-        text_Colour = (205, 191, 248)
-        text_Background = (0,0,0) 
-        text = font.render('QIX', True, text_Colour, text_Background)
-        text_Rect = text.get_rect()
-        text_Rect.center = (centerX, 200)
-        self.win.blit(text, text_Rect)
+        #Qix title
+        text = 'QIX'
+        self.drawText('freesansbold.ttf', 200, (205, 191, 248), text, centerX, 200)
         #Press any key
-        font = pygame.font.Font('freesansbold.ttf', 32)
-        text_Colour = (205, 191, 248) 
-        text = font.render('Press any key to start', True, text_Colour, text_Background)
-        text_Rect = text.get_rect()
-        text_Rect.center = (centerX, 400)
-        self.win.blit(text, text_Rect)
+        text = 'Press any key to start'
+        self.drawText('freesansbold.ttf', 32, (205, 191, 248), text, centerX, 400)
         #Bottom credits
-        font = pygame.font.Font('freesansbold.ttf', 13)
-        text_Colour = (205, 191, 248) 
-        text = font.render('Recreated By: Abdullah Aftab, My Chi Duong, Maryam Elbeshbishy, Igor Goncalves Penedos, Deandra Spike-Madden', True, text_Colour, text_Background)
-        text_Rect = text.get_rect()
-        text_Rect.center = (centerX, 470)
-        self.win.blit(text, text_Rect)
+        text = 'Recreated By: Abdullah Aftab, My Chi Duong, Maryam Elbeshbishy, Igor Goncalves Penedos, Deandra Spike-Madden'
+        self.drawText('freesansbold.ttf', 13, (205, 191, 248), text, centerX, 470)
 
     def drawGrid(self):
         for i in range(self.gridSize):
@@ -195,6 +199,7 @@ class main():
             pygame.draw.rect(self.win, self.spark.getColor(), (50 + self.spark4.coord[0] * self.velocity - 3,
                                                          50 + self.spark4.coord[1] * self.velocity - 3,
                                                          self.width + 4, self.width + 4))
+
     def drawScoreboard(self):
         centerX = ((745-474)//2) + 474 #center of the scoreboard
         #Upper Border
@@ -209,70 +214,55 @@ class main():
         red = random.randint(0,255)
         green = random.randint(0,255)
         blue = random.randint(0,255)
-        font = pygame.font.Font('freesansbold.ttf', 64)
-        text_Colour = (red, green, blue)
-        text_Background = (0,0,0) 
-        text = font.render('QIX', True, text_Colour, text_Background)
-        text_Rect = text.get_rect()
-        text_Rect.center = (centerX, 110)
-        self.win.blit(text, text_Rect)
+        self.drawText('freesansbold.ttf', 64, (red, green, blue), 'QIX', centerX, 110)
         #Hearts
-        font = pygame.font.SysFont('segoeuisymbol', 32)
-        text_Colour = (243, 149, 182)
-        text_Background = (0,0,0) 
-        text = font.render('❤'*self.player.lives, True, text_Colour, text_Background)
-        text_Rect = text.get_rect()
-        text_Rect.center = (centerX, 200)
-        self.win.blit(text, text_Rect)
+        text = '❤'*self.player.lives
+        self.drawText('segoeuisymbol', 32, (243, 149, 182), text, centerX, 200)
         #Precentage Claimed 
         if not self.grid.travel:
             self.claimed = math.floor(self.grid.getClaimed())
-        font = pygame.font.Font('freesansbold.ttf', 24)
-        text_Colour = (205, 191, 248)
-        text_Background = (0,0,0) 
-        text_String = 'Claimed: ' + str(self.claimed) + '/' + str(self.requiredClaimed) + '%'
-        text = font.render(text_String, True, text_Colour, text_Background)
-        text_Rect = text.get_rect()
-        text_Rect.center = (centerX, 250)
-        self.win.blit(text, text_Rect)
+        text = 'Claimed: ' + str(self.claimed) + '/' + str(self.requiredClaimed) + '%'
+        self.drawText('freesansbold.ttf', 24,(205, 191, 248),text, centerX, 250)
         #Level
-        font = pygame.font.Font('freesansbold.ttf', 24)
-        text_Colour = (205, 191, 248)
-        text_Background = (0,0,0) 
-        text_String = 'Level: ' + str(self.level)
-        text = font.render(text_String, True, text_Colour, text_Background)
-        text_Rect = text.get_rect()
-        text_Rect.center = (centerX, 300)
-        self.win.blit(text, text_Rect)
+        text = 'Level: ' + str(self.level)
+        self.drawText('freesansbold.ttf', 24, (205, 191, 248), text, centerX, 300)
+
+    def drawNextLevelPause(self):
+        self.win.fill((0,0,0))
+        centerX = 400
+        #Completed level INT
+        text = 'Completed Level ' + str(self.level)
+        self.drawText('freesansbold.ttf', 50, (205, 191, 248), text, centerX, 100)
+        #Claimed: INT%
+        text = 'Completed: ' + str(self.claimed) + '%'
+        self.drawText('freesansbold.ttf', 24, (205, 191, 248), text, centerX, 200)
+        #Click anywhere to more to level INT
+        text = 'Press any key to move to level '  + str(self.level + 1)
+        self.drawText('freesansbold.ttf', 24, (205, 191, 248), text, centerX, 300)
+
 
     def drawEndScreen(self, result):
         self.win.fill((0,0,0))
         centerX = 400
-        font = pygame.font.Font('freesansbold.ttf', 100)
-        text_Colour = (205, 191, 248)
-        text_Background = (0,0,0) 
-        text_String = 'YOU ' + result.upper()
-        text = font.render(text_String, True, text_Colour, text_Background)
-        text_Rect = text.get_rect()
-        text_Rect.center = (centerX, 100)
-        self.win.blit(text, text_Rect)
+        #YOU (Lost/Won)
+        text = 'YOU ' + result.upper()
+        self.drawText('freesansbold.ttf', 100, (205, 191, 248), text, centerX, 100)
+        #Level: INT
+        text = 'Level: ' + str(self.level)
+        self.drawText('freesansbold.ttf', 24, (205, 191, 248), text, centerX, 200)
+        #Claimed: INT
+        text = 'Claimed: ' + str(self.claimed) + '%'
+        self.drawText('freesansbold.ttf', 24, (205, 191, 248), text, centerX, 250)
+        text = 'Press any key to move to RESTART'
+        self.drawText('freesansbold.ttf', 24, (205, 191, 248), text, centerX, 400)
 
-        font = pygame.font.Font('freesansbold.ttf', 24)
-        text_Colour = (205, 191, 248)
+    def drawText(self, font, font_Size, colour, text_String, x, y ):
+        font = pygame.font.SysFont(font, font_Size)
+        text_Colour = colour
         text_Background = (0,0,0) 
-        text_String = 'Level: ' + str(self.level)
         text = font.render(text_String, True, text_Colour, text_Background)
         text_Rect = text.get_rect()
-        text_Rect.center = (centerX, 200)
-        self.win.blit(text, text_Rect)
-        
-        font = pygame.font.Font('freesansbold.ttf', 24)
-        text_Colour = (205, 191, 248)
-        text_Background = (0,0,0) 
-        text_String = 'Claimed: ' + str(self.claimed) + '%'
-        text = font.render(text_String, True, text_Colour, text_Background)
-        text_Rect = text.get_rect()
-        text_Rect.center = (centerX, 250)
+        text_Rect.center = (x, y)
         self.win.blit(text, text_Rect)
 
     def fade(self, delay): 

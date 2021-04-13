@@ -1,0 +1,6 @@
+If the main.exe DOES NOT WORK do the following:
+
+Go to "./code" file, find the file that has the name "main" and do the following:
+
+1. Right click
+2. Open with > Python
